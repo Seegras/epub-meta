@@ -61,22 +61,22 @@ int author = 0, contributor = 0, date = 0, desc = 0, filename = 0, help = 0, id 
 
 struct epub *epub;
 int size = 1, i;
-char ** epubtitle;
-char ** epubauthor;
-char ** epubid;
-char ** epubsubject;
-char ** epubpublisher;
-char ** epubdate;
-char ** epubtype;
-char ** epubdescription;
-char ** epubformat;
-char ** epubsource;
-char ** epublang;
-char ** epubrelation;
-char ** epubcoverage;
-char ** epubrights;
-char ** epubcontrib;
-char ** epubmeta;
+unsigned char ** epubtitle;
+unsigned char ** epubauthor;
+unsigned char ** epubid;
+unsigned char ** epubsubject;
+unsigned char ** epubpublisher;
+unsigned char ** epubdate;
+unsigned char ** epubtype;
+unsigned char ** epubdescription;
+unsigned char ** epubformat;
+unsigned char ** epubsource;
+unsigned char ** epublang;
+unsigned char ** epubrelation;
+unsigned char ** epubcoverage;
+unsigned char ** epubrights;
+unsigned char ** epubcontrib;
+unsigned char ** epubmeta;
 int leng, index1, index2; 
 
 char piece[50];
@@ -160,7 +160,7 @@ poptContext poptcon;
 		quit(1);
 	}
     }
-    leftarg = poptGetArg(poptcon);
+    leftarg = (char*) poptGetArg(poptcon);
     fname = leftarg;
 
     poptFreeContext(poptcon);
