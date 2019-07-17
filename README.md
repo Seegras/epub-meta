@@ -10,3 +10,5 @@ This version comes without epub-rename; see either the homepage
 at http://seegras.discordia.ch/Programs/ or the git repo 
 https://github.com/Seegras/metatags
 
+To install dependencies on Debian:
+apt install build-essential libpopt-dev libepub-dev
