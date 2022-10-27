@@ -1,14 +1,14 @@
-/* 
-	epub-meta 0.3
-	Peter Keel <seegras@discordia.ch>, January 2011
+/*
+    epub-meta 0.4
+    Peter Keel <seegras@discordia.ch>, January 2011
 
-	This program dumps the metadata of an epub-file. It's 
-	based on libepub by Ely Levy <elylevy@cs.huji.ac.il>
+    This program dumps the metadata of an epub-file. It's 
+    based on libepub by Ely Levy <elylevy@cs.huji.ac.il>
 
-	compile as: gcc -lpopt -lepub -o epub-meta epub-meta.c
+    compile as: gcc -lpopt -lepub -o epub-meta epub-meta.c
 
-	This Program underlies the MIT-License
-	See file COPYING for details.
+    This Program underlies the MIT-License
+    See file COPYING for details.
 */
 
 #include <stdio.h>
@@ -18,7 +18,7 @@
 #include <popt.h>
 #include <epub.h>
 
-#define GETOPT_NUMBER			1010
+#define GETOPT_NUMBER                        1010
 
 void quit(int code) {
   epub_cleanup();
@@ -108,206 +108,206 @@ poptContext poptcon;
 
     poptcon = poptGetContext("popti", argc, (const char**) argv, optionsTable, 0);
     while ((rc = poptGetNextOpt(poptcon)) > 0) { 
-	switch (rc) {
-	    case 'a': 
-		author = 1;
-		break;
-	    case 'c': 
-		contributor = 1;
-		break;
-	    case 'd': 
-		date = 1;
-		break;
-	    case 'e': 
-		desc = 1;
-		break;
-	    case 'f': 
-		filename = 1;
-		break;
-	    case 'h': 
-		help = 1;
-		break;
-	    case 'i': 
-		id = 1;
-		break;
-	    case 'l': 
-		lang = 1;
-		break;
-	    case 'm': 
-		meta = 1;
-		break;
-	    case 'p': 
-		publisher = 1;
-		break;
-	    case 'r': 
-		rights = 1;
-		break;
-	    case 's': 
-		subject = 1;
-		break;
-	    case 't': 
-		title = 1;
-		break;
-	    case 'v': 
-		verbose = 1;
-		break;
-	    case 'y': 
-		type = 1;
-		break;
+        switch (rc) {
+            case 'a': 
+                author = 1;
+                break;
+            case 'c': 
+                contributor = 1;
+                break;
+            case 'd': 
+                date = 1;
+                break;
+            case 'e': 
+                desc = 1;
+                break;
+            case 'f': 
+                filename = 1;
+                break;
+            case 'h': 
+                help = 1;
+                break;
+            case 'i': 
+                id = 1;
+                break;
+            case 'l': 
+                lang = 1;
+                break;
+            case 'm': 
+                meta = 1;
+                break;
+            case 'p': 
+                publisher = 1;
+                break;
+            case 'r': 
+                rights = 1;
+                break;
+            case 's': 
+                subject = 1;
+                break;
+            case 't': 
+                title = 1;
+                break;
+            case 'v': 
+                verbose = 1;
+                break;
+            case 'y': 
+                type = 1;
+                break;
 
-	    default:
-		fprintf(stderr, "Internal Error with parameter-processing\n");
-		quit(1);
-	}
+            default:
+                fprintf(stderr, "Internal Error with parameter-processing\n");
+                quit(1);
+        }
     }
     leftarg = (char*) poptGetArg(poptcon);
     fname = leftarg;
 
-    poptFreeContext(poptcon);
     if (help) printHelp();
 
 
 /*--- open file, if impossible, use stdout -------------*/
 
-  if (! fname) {
-    fprintf(stderr, "Missing file name %s\n", fname);
-    printHelp();
-  }
+    if (! fname) {
+        fprintf(stderr, "Missing file name %s\n", fname);
+        printHelp();
+    }
 
-  if (! (epub = epub_open(fname, verbose)))
-    quit(1);
+    if (verbose || filename) {
+        fprintf(stdout, "File: %s\n", fname);
+    }
 
-
-if (verbose || filename) {
-    printf("File: %s\n", fname);
-}
+    if (! (epub = epub_open(fname, verbose))) {
+        fprintf(stderr, "Cannot open %s\n", fname);
+        quit(1);
+    }
 
 if (verbose || title) {
     if ((epubtitle = epub_get_metadata(epub, EPUB_TITLE, &size))) {
-	for (i = 0;i<size;i++) {
-	    printf("Title: %s\n", epubtitle[i]);
+        for (i = 0;i<size;i++) {
+            printf("Title: %s\n", epubtitle[i]);
         }
     }
 }
 if (verbose || author) {
     if ((epubauthor = epub_get_metadata(epub, EPUB_CREATOR, &size))) {
-	for (i = 0;i<size;i++) {
-	    printf("Author: %s\n", epubauthor[i]);
-	}
+        for (i = 0;i<size;i++) {
+            printf("Author: %s\n", epubauthor[i]);
+        }
     }
 }
 if (verbose || id) {
     if ((epubid = epub_get_metadata(epub, EPUB_ID, &size))) {
-	for (i = 0;i<size;i++) {
-	    printf("ID: %s\n", epubid[i]);
-	}
+        for (i = 0;i<size;i++) {
+            printf("ID: %s\n", epubid[i]);
+        }
     }
 }
 if (verbose || subject) {
     if ((epubsubject = epub_get_metadata(epub, EPUB_SUBJECT, &size))) {
-	for (i = 0;i<size;i++) {
-	    if (epubsubject[i][0] != '\0') {
-		printf("Subject: %s\n", epubsubject[i]);
-	    }
-	}
+        for (i = 0;i<size;i++) {
+            if (epubsubject[i][0] != '\0') {
+                printf("Subject: %s\n", epubsubject[i]);
+            }
+        }
     }
 }
 if (verbose || publisher) {
     if ((epubpublisher = epub_get_metadata(epub, EPUB_PUBLISHER, &size))) {
-	for (i = 0;i<size;i++) {
-	    printf("Publisher: %s\n", epubpublisher[i]);
-	}
+        for (i = 0;i<size;i++) {
+            printf("Publisher: %s\n", epubpublisher[i]);
+        }
     }
 }
 if (verbose || date) {
     if ((epubdate = epub_get_metadata(epub, EPUB_DATE, &size))) {
-	for (i = 0;i<size;i++) {
-	    printf("Date: %s\n", epubdate[i]);
-	}
+        for (i = 0;i<size;i++) {
+            printf("Date: %s\n", epubdate[i]);
+        }
     }
 }
 if (verbose || type) {
     if ((epubtype = epub_get_metadata(epub, EPUB_TYPE, &size))) {
-	for (i = 0;i<size;i++) {
-	    printf("Type: %s\n", epubtype[i]);
-	}
+        for (i = 0;i<size;i++) {
+            printf("Type: %s\n", epubtype[i]);
+        }
     }
 }
 if (verbose) {
     if ((epubformat = epub_get_metadata(epub, EPUB_FORMAT, &size))) {
-	for (i = 0;i<size;i++) {
-	    if (epubformat[i][0] != '\0') {
-		printf("Format: %s\n", epubformat[i]);
-	     }
+        for (i = 0;i<size;i++) {
+            if (epubformat[i][0] != '\0') {
+                printf("Format: %s\n", epubformat[i]);
+             }
         }
     }
 }
 if (verbose) {
     if ((epubsource = epub_get_metadata(epub, EPUB_SOURCE, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Source: %s\n", epubsource[i]);
+            printf("Source: %s\n", epubsource[i]);
         }
     }
 }
 if (verbose || lang) {
     if ((epublang = epub_get_metadata(epub, EPUB_LANG, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Lang: %s\n", epublang[i]);
+            printf("Lang: %s\n", epublang[i]);
         }
     }
 }
 if (verbose) {
     if ((epubrelation = epub_get_metadata(epub, EPUB_RELATION, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Relation: %s\n", epubrelation[i]);
-	}
+            printf("Relation: %s\n", epubrelation[i]);
+        }
     }
 }
 if (verbose) {
     if ((epubcoverage = epub_get_metadata(epub, EPUB_COVERAGE, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Coverage: %s\n", epubcoverage[i]);
+            printf("Coverage: %s\n", epubcoverage[i]);
         }
     }
 }
 if (verbose || rights) {
     if ((epubrights = epub_get_metadata(epub, EPUB_RIGHTS, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Rights: %s\n", epubrights[i]);
+            printf("Rights: %s\n", epubrights[i]);
         }
     }
 }
 if (verbose || contributor) {
     if ((epubcontrib = epub_get_metadata(epub, EPUB_CONTRIB, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Contrib: %s\n", epubcontrib[i]);
+            printf("Contrib: %s\n", epubcontrib[i]);
         }
     }
 }
 if (verbose || meta) {
     if ((epubmeta = epub_get_metadata(epub, EPUB_META, &size))) {
         for (i = 0;i<size;i++) {
-	    printf("Meta: %s\n", epubmeta[i]);
+            printf("Meta: %s\n", epubmeta[i]);
         }
     }
 }
 if (verbose || desc) {
     if ((epubdescription = epub_get_metadata(epub, EPUB_DESCRIPTION, &size))) {
         for (i = 0;i<size;i++) {
-	    if (epubdescription[i][0] != '\0') {
-		printf("Desc: %s\n", epubdescription[i]);
-	    }
-	}
+            if (epubdescription[i][0] != '\0') {
+                printf("Desc: %s\n", epubdescription[i]);
+            }
+        }
     }
 }
 
-
-  if (! epub_close(epub)) {
+if (! epub_close(epub)) {
     quit(1);
-  }
+}
 
 
 /*--- clean up ---------------------------------*/
+poptFreeContext(poptcon);
 quit(0);
 return(0);
 }
